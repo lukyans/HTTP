@@ -33,7 +33,7 @@ class Start
     
       response = raw_response.response(request_lines, path)
       @server_running = false if response.split(":")[0] == "Total Requests"
-
+      
       @request_lines = []
       
       # response = "<pre>" + "Hello, World.(#{counter})" + "</pre>"
@@ -49,9 +49,8 @@ class Start
       puts ["Wrote this response:", headers, output].join("\n")
       client.close
       puts "\nResponse complete, exiting."
-
+      client.close   
     end
-    #client.close
   end
 end
 

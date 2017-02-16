@@ -1,15 +1,17 @@
 
 
 class Path
-  attr_accessor :hello_counter
   def initialize
     @hello_counter = 0
-    @counter = 0
+    @count = 0
   end
 
   def response(request_lines, path)
-    
-    @counter += 1
+    @count += 1
+
+    # if path == '/favicon.ico'  
+    #   client.puts ["http/1.1 404 not-found"]
+     
     if path == "GET / HTTP/1.1"
       handle_root(request_lines)
     elsif path == "GET /hello HTTP/1.1"
@@ -18,8 +20,9 @@ class Path
       handle_datetime
     elsif path == "GET /shutdown HTTP/1.1"
       handle_shutdown
+    elsif path   
+      dictionary_word(path)
     end
-    
   end
 
   def handle_root(request_lines)
@@ -41,12 +44,11 @@ class Path
     Origin: "#{origin}"
     accept: "#{accept}"
     </pre>]
-    # return header_string
   end
 
   def handle_hello
     @hello_counter +=1
-     "<pre>" + "Hello, World.(#{hello_counter})" + "</pre>"
+    "<pre>" + "Hello, World.(#{@hello_counter})" + "</pre>"
   end
 
   def handle_datetime
@@ -54,6 +56,17 @@ class Path
   end
 
   def handle_shutdown
-    "Total Requests: #{@counter}"
+    "Total Requests: #{@count}"
+  end
+
+  def dictionary_word(path)
+    file = File.read("/usr/share/dict/words")
+    word = path.split("=")[1].split(" ")[0]
+    
+    if file.include?(word)
+      "#{word} is a known word"
+    else
+      "#{word} is not a known word"
+    end
   end
 end

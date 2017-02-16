@@ -5,7 +5,6 @@ require "./lib/path"
 require "Time"
 
 class PathTest < Minitest::Test
-
   def test_it_outputting_diagnostic
     path = Path.new
     test_request = ["GET /hello HTTP/1.1", 
@@ -55,7 +54,21 @@ class PathTest < Minitest::Test
   def test_it_pesponse_diagnostic_data_if_shutdown
     path = Path.new
     empty = ""
-    
+
     assert_equal "Total Requests: 1", path.response(empty, "GET /shutdown HTTP/1.1")
+  end
+
+  def test_return_word_from_dictionary_is_known
+    path = Path.new
+    empty = ""
+
+    assert_equal "box is a known word", path.response(empty, "GET /word_search?word=box HTTP/1.1")
+  end
+
+  def test_return_word_from_dictionary_is_not_known
+    path = Path.new
+    empty = ""
+
+    assert_equal "sergey is not a known word", path.response(empty, "GET /word_search?word=sergey HTTP/1.1")
   end
 end
